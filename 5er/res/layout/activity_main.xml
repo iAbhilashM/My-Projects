@@ -9,16 +9,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <Button
-        android:id="@+id/buttonGo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="140dp"
-        android:text="Go!!"
-        android:textColor="#FFFFFF" />
-
     <EditText
         android:id="@+id/editTextInteger"
         android:layout_width="fill_parent"
@@ -72,5 +62,26 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/editTextString"
         android:src="@drawable/logobc" />
+
+    <Button
+        android:id="@+id/buttonGo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textViewResult"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_marginBottom="20dp"
+        android:text="Go!!"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/buttonClear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/buttonGo"
+        android:layout_alignBottom="@+id/buttonGo"
+        android:layout_alignRight="@+id/textView1"
+        android:text="Clear" 
+        android:textColor="#FFFFFF"
+        />
 
 </RelativeLayout>

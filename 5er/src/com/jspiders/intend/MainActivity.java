@@ -16,6 +16,7 @@ public class MainActivity extends Activity {
 	EditText stringEditText;
 	EditText integerEditText;
 	Button goButton;
+	Button clearButton;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +26,12 @@ public class MainActivity extends Activity {
         stringEditText=(EditText) findViewById(R.id.editTextString);
         integerEditText=(EditText) findViewById(R.id.editTextInteger);
         goButton=(Button) findViewById(R.id.buttonGo);
+        clearButton=(Button) findViewById(R.id.buttonClear);
         
         stringEditText.setHint("Can I know your name? :)");
 		integerEditText.setHint("Enter a number for 5er!!");
         
+		
         
         goButton.setOnClickListener(new OnClickListener() {
 			
@@ -75,6 +78,17 @@ public class MainActivity extends Activity {
 			        startActivity(intent);
 				}
 				
+				
+			}
+		});
+        clearButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				stringEditText.getText().clear();
+				integerEditText.getText().clear();
+				stringEditText.setHint("Can I know your name? :)");
+				integerEditText.setHint("Enter a number for 5er!!");
 				
 			}
 		});
