@@ -85,10 +85,9 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View arg0) {
-				stringEditText.getText().clear();
-				integerEditText.getText().clear();
-				stringEditText.setHint("Can I know your name? :)");
-				integerEditText.setHint("Enter a number for 5er!!");
+				
+				stringEditText.setText("");
+				integerEditText.setText("");
 				
 			}
 		});
