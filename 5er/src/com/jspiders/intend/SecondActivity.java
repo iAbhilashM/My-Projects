@@ -32,9 +32,9 @@ public class SecondActivity extends Activity {
 		Bundle b1=intent.getExtras();
 		String s1=b1.getString("Key1");
 		if(s1==null){
-		greetingsTextView.setText("Hi, "+"Guest");
+		greetingsTextView.setText("Hi, "+"Guest!");
 		}else{
-			greetingsTextView.setText("Hi, "+s1);
+			greetingsTextView.setText("Hi, "+s1+"!");
 		}
 		double d1=b1.getDouble("Key2");
 		
@@ -45,6 +45,7 @@ public class SecondActivity extends Activity {
 		mulresTextView.setText(dToS(d1*5));
 		divTextView.setText(dToS(d1/5));
 		}else {
+			resultTextView.setText("To get the results for 5er, please enter a number!");
 			addresTextView.setText("N/A");
 			subresTextView.setText("N/A");
 			mulresTextView.setText("N/A");
