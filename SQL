@@ -1,0 +1,38 @@
+CREATE DATABASE flightinfo;
+
+use flightinfo;
+
+CREATE TABLE flights(flno INT PRIMARY KEY,ffrom VARCHAR(50) NOT NULL,fto VARCHAR(50) NOT NULL,
+distance INT NOT NULL,departs TIME NOT NULL,arrives TIME NOT NULL,price NUMERIC(8,2));
+
+truncate table flights;
+
+INSERT INTO flights VALUES
+(1001,'chennai','bangalore',1000,'05:30:00','06:30:00' ,3000),
+(1002,'bangalore','UK',2000,'06:30:00' ,'08:30:00' ,8800),
+(1003,'UK','US',3000,'05:30:00','09:30:00' ,9000),
+(1004,'Bhubaneswar','bangalore',1750,'13:30:00','14:38:00' ,9500),
+(1005,'New Delhi','Goa',2800,'07:30:00' ,'09:15:00' ,7500),
+(1006,'Chennai','Hyderabad',1600,'19:30:00','20:38:00' ,2500);
+
+select * from flights;
+
+CREATE TABLE  aircraft(aid INT, foreign key (aid) REFERENCES flights(flno),aname VARCHAR(50) NOT NULL,cruisingrange INT NOT NULL);
+
+INSERT INTO aircraft VALUES(1001,'CG1111',59),(1002,'CG2222',46),(1003,'CG3333',51),(1004,'CG4444',79),
+(1005,'CG555',97),(1006,'CG666',41);
+
+CREATE TABLE employees(eid INT PRIMARY KEY ,ename VARCHAR(50) NOT NULL,salary INT NOT NULL);
+
+INSERT INTO employees values (101,'Abhilash',50000),(102,'Payal',46000),(103,'Asim',32000),
+(104,'Bantu',55000),(105,'Sanjaya',23000);
+
+
+CREATE TABLE Certified
+(eid INT, foreign key (eid) REFERENCES employees(eid),aid INT , foreign key (aid) REFERENCES aircraft(aid) );
+
+INSERT INTO Certified VALUES(104,1003),(102,1005),(101,1002),(105,1004),(103,1001);
+
+
+
+
