@@ -1,11 +1,20 @@
+DROP DATABASE flightms;
+
 CREATE DATABASE flightinfo;
 
-use flightinfo;
+USE flightinfo;
 
-CREATE TABLE flights(flno INT PRIMARY KEY,ffrom VARCHAR(50) NOT NULL,fto VARCHAR(50) NOT NULL,
-distance INT NOT NULL,departs TIME NOT NULL,arrives TIME NOT NULL,price NUMERIC(8,2));
+DROP TABLE flights;
+DROP TABLE aircraft;
+DROP TABLE employees;
+DROP TABLE Certified;
 
-truncate table flights;
+
+
+
+CREATE TABLE flights(flno INT PRIMARY KEY,ffrom VARCHAR(50) NOT NULL,
+fto VARCHAR(50) NOT NULL,distance INT NOT NULL,departs TIME NOT NULL,
+arrives TIME NOT NULL,price NUMERIC(8,2));
 
 INSERT INTO flights VALUES
 (1001,'chennai','bangalore',1000,'05:30:00','06:30:00' ,3000),
@@ -13,26 +22,184 @@ INSERT INTO flights VALUES
 (1003,'UK','US',3000,'05:30:00','09:30:00' ,9000),
 (1004,'Bhubaneswar','bangalore',1750,'13:30:00','14:38:00' ,9500),
 (1005,'New Delhi','Goa',2800,'07:30:00' ,'09:15:00' ,7500),
-(1006,'Chennai','Hyderabad',1600,'19:30:00','20:38:00' ,2500);
+(1006,'Chennai','Hyderabad',1600,'19:30:00','20:38:00' ,2500),
+(1007,'Bhubaneswar','Hyderabad',1680,'12:30:00','13:38:00' ,2800),
+(1008,'Bangalore','Chennai',1300,'14:10:00','15:28:00' ,2900),
+(1009,'Hyderabad','Goa',1050,'19:20:00','20:38:00' ,3200),
+(1010,'Hyderabad','Goa',1250,'19:20:00','20:38:00' ,3000);
 
-select * from flights;
+SELECT * FROM flights;
 
-CREATE TABLE  aircraft(aid INT, foreign key (aid) REFERENCES flights(flno),aname VARCHAR(50) NOT NULL,cruisingrange INT NOT NULL);
+CREATE TABLE  aircraft(aid INT, FOREIGN KEY (aid) REFERENCES flights(flno),
+aname VARCHAR(50) NOT NULL,cruisingrange INT NOT NULL);
 
-INSERT INTO aircraft VALUES(1001,'CG1111',59),(1002,'CG2222',46),(1003,'CG3333',51),(1004,'CG4444',79),
-(1005,'CG555',97),(1006,'CG666',41);
+INSERT INTO aircraft VALUES(1001,'CG1111',1200),(1002,'CG2222',800),
+(1003,'CG3333',600),(1004,'CG4444',1500),
+(1005,'CG5555',1500),(1006,'CG6666',650),(1007,'CG7777',680),
+(1008,'CG8888',1200),(1009,'CG9999',300);
+INSERT INTO aircraft VALUES(1010,'CG2111',1000);
 
-CREATE TABLE employees(eid INT PRIMARY KEY ,ename VARCHAR(50) NOT NULL,salary INT NOT NULL);
+CREATE TABLE employees(eid INT PRIMARY KEY ,ename VARCHAR(50) NOT NULL,
+salary INT NOT NULL);
 
-INSERT INTO employees values (101,'Abhilash',50000),(102,'Payal',46000),(103,'Asim',32000),
-(104,'Bantu',55000),(105,'Sanjaya',23000);
+INSERT INTO employees VALUES (101,'Abhilash',50000),(102,'Payal',46000),
+(103,'Asim',32000),(104,'Bantu',55000),(105,'Sanjaya',23000),(106,'Suchi',51000),
+(107,'Khusboo',46000),(108,'Sid',32000),(109,'Sharad',52000),(110,'Kavya',23000);
 
+INSERT INTO employees VALUES (111,'Hari',6000);
 
 CREATE TABLE Certified
-(eid INT, foreign key (eid) REFERENCES employees(eid),aid INT , foreign key (aid) REFERENCES aircraft(aid) );
+(eid INT, FOREIGN KEY (eid) REFERENCES employees(eid),aid INT , 
+FOREIGN KEY (aid) REFERENCES aircraft(aid) );
 
-INSERT INTO Certified VALUES(104,1003),(102,1005),(101,1002),(105,1004),(103,1001);
+INSERT INTO Certified VALUES(104,1003),(102,1005),(101,1002),(105,1004),(103,1001),
+(104,1002),(104,1001),(104,1005),(101,1001),(101,1004),(101,1003),(104,1007),
+(102,1008),(104,1009);
+INSERT INTO Certified VALUES(105,1010);
 
 
+SELECT * FROM flights;
+SELECT * FROM aircraft;
+SELECT * FROM employees;
+SELECT * FROM Certified;
+
+
+
+
+
+/*1. Find the names of aircraft such that all pilots 
+certified to operate them have salaries more than 80,000.*/
+SELECT DISTINCT aname FROM aircraft WHERE aid IN(
+SELECT aid FROM certified WHERE eid IN
+(SELECT eid FROM employees WHERE salary>8000));
+
+--------------------
+SELECT DISTINCT a.aname Aircraft_Name
+FROM aircraft a,certified c,employees e
+WHERE a.aid=c.aid
+AND c.eid=e.eid
+AND salary>8000;
+
+
+/* 2. FOR EACH pilot who IS certified FOR more THAN three aircraft, 
+find the eid AND the maximum crusingrange of the airctaft FOR which she 
+OR he IS certified.*/
+(-Doubt)
+SELECT eid Employee_ID,MAX(cruisingrange) Maximum_Cruisingrange FROM
+(SELECT eid, cruisingrange FROM aircraft a, certified c WHERE a.aid=c.aid 
+GROUP BY eid HAVING COUNT(c.aid)>3) ttable GROUP BY eid;
+
+------------
+SELECT eid Employee_ID,MAX(cruisingrange) Maximum_Cruisingrange
+FROM certified c,aircraft a
+WHERE c.aid=a.aid
+GROUP BY eid
+HAVING COUNT(c.aid)>3;
+
+/*3. Find the names of pilots whose salary is less 
+than the price of the cheapest route from New Delhi to Goa.*/  
+
+SELECT e.ename Employee_Name
+FROM employees e
+WHERE e.salary<
+(SELECT MIN(f.price)
+FROM flights f
+WHERE f.ffrom='New Delhi'
+AND f.fto='Goa');
+---------------------------
+
+
+/*4. For all aircraft with crusingrange 1000 miles, 
+find the name of the aircraft and the average salary of 
+all pilots certified for this aircraft.*/
+
+SELECT a.aid Aircraft_ID,a.aname Aircraft_Name,AVG(e.salary) Avarage_Salary
+FROM aircraft a,certified c,employees e
+WHERE a.aid=c.aid
+AND c.eid=e.eid AND a.cruisingrange=1000
+GROUP BY a.aid,a.aname;
+----------------------
+SELECT aid,aname,AVG(salary) FROM aircraft,employees
+WHERE eid IN(SELECT eid FROM certified WHERE aid=(SELECT aid FROM aircraft 
+WHERE cruisingrange=1000));
+
+/*5. Find the NAMES of pilots certified FOR 'CG1111' aircraft.*/
+
+SELECT e.ename Employee_Name
+FROM employees e,aircraft a,certified c
+WHERE e.eid=c.eid
+AND c.aid=a.aid
+AND aname='CG1111';
+
+/*6. Find the aids of all aircraft that can be used on routes from 
+ Bangalore to Delhi.*/
+
+SELECT a.aid Aircraft_ID
+FROM aircraft a
+WHERE a.cruisingrange>=
+(SELECT MIN(f.distance)
+FROM flights
+WHERE ffrom='Hyderabad'
+AND fto='Goa');
+
+/*7. Identify the routes that can be piloted 
+by every pilot who makes more than 50000*/
+
+SELECT DISTINCT ffrom, fto 
+FROM flights f,certified c,employees e
+WHERE e.eid=c.eid
+AND e.salary>50000;
+
+/*8. Print the enames of pilots who can operate planes with crusing range 
+greater than 3000 miles but are not certified to any Boeing aircraft.*/
+
+SELECT 
+
+
+
+
+
+
+
+
+
+
+------------------------END-----------------------------
+USE capdb;
+SELECT * FROM employee;
+
+CREATE VIEW empView AS 
+SELECT firstname FROM employee;
+
+
+SELECT * FROM empView;
+
+USE teacherdb;
+
+START TRANSACTION; (OR) SET autocommit=FALSE;
+SELECT * FROM payscale;
+SELECT COUNT(*) FROM payscale;
+DELETE FROM payscale WHERE min_limit=300000;
+SELECT COUNT(*) FROM payscale;
+ROLLBACK;
+SELECT COUNT(*) FROM payscale;
+
+SET autocommit=TRUE;
+
+---------------------------SP---------
+CALL addnumbers(5,2,@ans);
+SELECT @ans;
+
+CALL userGreetings('Abhilash','Mishra',@greetings);
+SELECT @greetings;
+
+
+SELECT findMax(1,2,3);
+
+SELECT * FROM teacher;
+
+
+CALL findTeacher(10,@tname);
+SELECT @tname;
 
 
