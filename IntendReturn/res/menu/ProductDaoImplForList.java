@@ -1,3 +1,16 @@
+
+
+productDetails.put(4598, new Product(4598, "Moto G3", "Best phone in market", new Date("12-May-2016"),
+				new Date("14-Aug-2017"), 130000, new Category(1, "Electronics", "Electronics Items"),
+				new SubCategory(101, "Mobile", new Category(1, "Electronics", "Electronic Items")),
+				new Supplier(1001, "Rahul", "Raju", "Chamrajnagar", "Mysore", "Karnataka", "570016", "9439422696"),
+				null, 12, 3.5f));
+
+
+
+------------------------------------------
+
+
 package com.flp.pms.dao;
 
 import java.util.ArrayList;
