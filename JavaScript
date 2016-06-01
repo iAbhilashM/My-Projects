@@ -1,0 +1,121 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+
+<title>Employee Form</title>
+<link type="text/css" rel="stylesheet" href="../css/styles.css">
+<script type="text/javascript" src="../script/myScript.js"></script>
+</head>
+<body>
+
+	<form method="get" name="empForm" onsubmit="return empValidation()">
+		<h1 align="center">Employee Details</h1>
+		<hr>
+
+		<table id="empTable">
+			<tr>
+				<td>Name:</td>
+				<td><input type="text" name="empName" id="empName" size="20" /></td>
+				<td>
+					<div id="empNameMsg" class="errMsg"></div>
+				</td>
+			</tr>
+			<tr>
+				<td>Password:</td>
+				<td><input type="password" name="empPwd" size="20" /></td>
+				<td>
+					<div id="empPwdMsg" class="errMsg"></div>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Confirm Password:</td>
+				<td><input type="password" name="empConfirmPwd" size="20" /></td>
+				<td>
+					<div id="empConfirmPwdMsg" class="errMsg"></div>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Date of Birth:</td>
+				<td><input type="date" name="empdob"></td>
+				<td>
+					<div id="empDobMsg" class="errMsg"></div>
+				</td>
+			</tr>
+			<tr>
+				<td>Gender:</td>
+				<td><input type="radio" name="gender" value="Male">
+					Male <input type="radio" name="gender" value="Female">
+					Female</td>
+				<td>
+					<div id="empgenderMsg" class="errMsg"></div>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Qualifications:</td>
+				<td><input type="checkbox" name="qualification" value="BE">BE
+					<input type="checkbox" name="qualification" value="BCA">
+					BCA <input type="checkbox" name="qualification" value="MCA">
+					MCA <input type="checkbox" name="qualification" value="ME">
+					ME <input type="checkbox" name="qualification" value="BTECH">
+					BTECH <input type="checkbox" name="qualification" value="PHD">
+					PHD</td>
+				<td>
+					<div id="empgenderMsg" class="errMsg"></div>
+				</td>
+			</tr>
+
+
+
+
+			<tr>
+				<td>Department:</td>
+				<td><select name="empDepart" multiple="multiple">
+						<option value="sales">sales</option>
+						<option value="purchase">purchase</option>
+						<option value="finance">finance</option>
+						<option value="marketing">marketing</option>
+						<option value="hr">hr</option>
+						<option value="peopleProcess">peopleProcess</option>
+				</select></td>
+				<td>
+					<div id="empgenderMsg" class="errMsg"></div>
+				</td>
+			</tr>
+
+
+
+			<tr>
+				<td>Address:</td>
+				<td><textarea rows="5" cols="20" name="empAddress"></textarea>
+
+				</td>
+				<td>
+					<div id="empDobMsg" class="errMsg"></div>
+				</td>
+			</tr>
+
+
+
+
+			<tr>
+				<td></td>
+				<td><input type="submit" value="Save"> <input
+					type="button" value="message"> <input type="reset"
+					value="Clear"></td>
+			</tr>
+
+		</table>
+
+	</form>
+
+</body>
+</html>
+
+
+--------------------------------------------------------------------------
+
+
+
